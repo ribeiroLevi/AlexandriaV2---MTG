@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export function Landing() {
   return (
     <div className="h-screen w-screen overflow-hidden flex items-center flex-col bg-orange-200">
@@ -19,9 +21,11 @@ export function Landing() {
           <p className="font-Karantina text-[40px] -mt-16 text-orange-700">
             The Supreme Magic The Gathering Library
           </p>
-          <button className="w-48 h-10 text-3xl rounded-md text-orange-200 font-Karantina bg-orange-900">
-            EXPLORE
-          </button>
+          <Link to={'/cardsList'}>
+            <button className="w-48 h-10 text-3xl rounded-md text-orange-200 font-Karantina bg-orange-900">
+              EXPLORE
+            </button>
+          </Link>
         </div>
       </div>
     </div>
