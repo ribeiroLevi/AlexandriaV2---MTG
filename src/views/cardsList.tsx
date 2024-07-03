@@ -18,17 +18,20 @@ export interface Card {
 
 export function CardsList() {
   const [cards, setCards] = useState<Card[]>([]);
+  const [selectedSetUri, setSelectedSetUri] = useState<string>('');
 
-  const getCards = () => {
+  const getCards = (uri: string) => {
     axios
-      .get('https://api.scryfall.com/cards/search?q=c%3Awhite+mv%3D1')
+      .get(uri)
       .then((response) => setCards(response.data.data))
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
-    getCards();
-  }, []);
+    if (selectedSetUri) {
+      getCards(selectedSetUri);
+    }
+  }, [selectedSetUri]);
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -42,13 +45,13 @@ export function CardsList() {
           </div>
         </Link>
       </nav>
-      <div className="w-5/6  gap-4 grid grid-cols-2">
+      <div className="w-5/6 gap-4 grid grid-cols-2">
         <input
           type="text"
           className="h-10 rounded-md w-full bg-orange-200 border-2 border-orange-800 placeholder-orange-800 placeholder:font-bold placeholder:indent-5 indent-5 placeholder:opacity-50"
           placeholder="Carta Aleatória..."
         />
-        <Combobox />
+        <Combobox setSelectedSetUri={setSelectedSetUri} />
       </div>
       <div className="w-5/6 flex flex-col">
         <ul>

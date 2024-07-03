@@ -1,4 +1,3 @@
-import * as utils from '../lib/utils';
 import axios from 'axios';
 import {
   Command,
@@ -16,9 +15,15 @@ import { useEffect, useState } from 'react';
 interface Sets {
   code: string;
   name: string;
+  icon_svg_uri: string;
+  search_uri: string;
 }
 
-export function Combobox() {
+interface ComboboxProps {
+  setSelectedSetUri: (uri: string) => void;
+}
+
+export function Combobox({ setSelectedSetUri }: ComboboxProps) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
   const [sets, setSets] = useState<Sets[]>([]);
@@ -45,7 +50,7 @@ export function Combobox() {
             className="w-[200px] justify-between h-10"
           >
             {value ? sets.find((set) => set.code === value)?.name : 'Set...'}
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
@@ -55,22 +60,25 @@ export function Combobox() {
               <CommandEmpty>No set found.</CommandEmpty>
               <CommandGroup>
                 {sets.map((set) => (
-                  <CommandItem
-                    key={set.code}
-                    value={set.code}
-                    onSelect={(currentValue) => {
-                      setValue(currentValue === value ? '' : currentValue);
-                      setOpen(false);
-                    }}
-                  >
-                    <Check
-                      className={utils.cn(
-                        'mr-2 h-4 w-4',
-                        value === set.code ? 'opacity-100' : 'opacity-0'
-                      )}
-                    />
-                    {set.name}
-                  </CommandItem>
+                  <div className="flex flex-row" key={set.code}>
+                    <img src={set.icon_svg_uri} className="w-6" alt="" />
+                    <CommandItem
+                      className="text-sm text-start w-full ml-0"
+                      value={set.code}
+                      onSelect={() => {
+                        setValue(set.code);
+                        setSelectedSetUri(set.search_uri);
+                        setOpen(false);
+                      }}
+                    >
+                      <Check
+                        className={`mr-2 h-4 w-4 ${
+                          value === set.code ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      />
+                      {set.name}
+                    </CommandItem>
+                  </div>
                 ))}
               </CommandGroup>
             </CommandList>
