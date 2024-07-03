@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export function Landing() {
   return (
-    <div className="h-screen w-screen overflow-hidden flex items-center flex-col bg-orange-200">
+    <div className="h-screen w-screen overflow-hidden flex items-center flex-col ">
       <img
         src="/ALEXANDRIA.svg"
         alt=""
