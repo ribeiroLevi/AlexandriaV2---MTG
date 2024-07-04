@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { CardView } from '../components/cardView';
+import { CardComponent } from '../components/CardComponent';
 import { Link } from 'react-router-dom';
 import { Combobox } from '../components/ui/combobox';
+import { Input } from '../components/ui/input';
 
 export interface Card {
   id: string;
@@ -14,11 +15,22 @@ export interface Card {
     art_crop: string;
     border_crop: string;
   };
+  cmc: number;
+  power: string;
+  name: string;
+  toughness: string;
+  flavor_text: string;
+  rarity: string;
+  set_name: string;
+  prints_search_uri: string;
+  type_line: string;
+  oracle_text: string;
 }
 
 export function CardsList() {
   const [cards, setCards] = useState<Card[]>([]);
   const [selectedSetUri, setSelectedSetUri] = useState<string>('');
+  const [showNoSetMessage, setShowNoSetMessage] = useState<boolean>(true);
 
   const getCards = (uri: string) => {
     axios
@@ -46,21 +58,28 @@ export function CardsList() {
         </Link>
       </nav>
       <div className="w-5/6 gap-4 grid grid-cols-2">
-        <input
-          type="text"
-          className="h-10 rounded-md w-full bg-orange-200 border-2 border-orange-800 placeholder-orange-800 placeholder:font-bold placeholder:indent-5 indent-5 placeholder:opacity-50"
-          placeholder="Carta Aleatória..."
+        <Input />
+        <Combobox
+          setSelectedSetUri={setSelectedSetUri}
+          setShowNoSetMessage={setShowNoSetMessage}
         />
-        <Combobox setSelectedSetUri={setSelectedSetUri} />
       </div>
       <div className="w-5/6 flex flex-col">
         <ul>
           <li className="grid md:grid-cols-2 lg:grid-cols-4 ">
             {cards.map((card, key) => (
-              <CardView key={key} card={card} />
+              <CardComponent key={key} card={card} />
             ))}
           </li>
         </ul>
+      </div>
+      <div className="flex align-middle justify-center items-center mt-20">
+        <p
+          className={`text-orange-800 ${showNoSetMessage ? 'block' : 'hidden'}`}
+        >
+          No set selected, please{' '}
+          <span className="text-orange-900 font-bold">select a set</span>.
+        </p>
       </div>
     </div>
   );
