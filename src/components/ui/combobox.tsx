@@ -21,9 +21,13 @@ interface Sets {
 
 interface ComboboxProps {
   setSelectedSetUri: (uri: string) => void;
+  setShowNoSetMessage: (showNoSetMessage: boolean) => void;
 }
 
-export function Combobox({ setSelectedSetUri }: ComboboxProps) {
+export function Combobox({
+  setSelectedSetUri,
+  setShowNoSetMessage,
+}: ComboboxProps) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
   const [sets, setSets] = useState<Sets[]>([]);
@@ -47,27 +51,35 @@ export function Combobox({ setSelectedSetUri }: ComboboxProps) {
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[200px] justify-between h-10"
+            className="w-1/2 items-center justify-between h-10 border-2 border-orange-800 bg-orange-800 text-orange-200 hover:border-orange-800 hover:bg-orange-200 hover:text-orange-800"
           >
             {value ? sets.find((set) => set.code === value)?.name : 'Set...'}
-            <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+            <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 " />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
-          <Command>
-            <CommandInput placeholder="Search set..." />
+        <PopoverContent className="w-full p-0 ">
+          <Command className="bg-orange-800 text-orange-200">
+            <CommandInput
+              className=" placeholder:text-orange-200"
+              placeholder="Search set..."
+            />
             <CommandList>
               <CommandEmpty>No set found.</CommandEmpty>
               <CommandGroup>
                 {sets.map((set) => (
-                  <div className="flex flex-row" key={set.code}>
-                    <img src={set.icon_svg_uri} className="w-6" alt="" />
+                  <div className="flex flex-row text-orange-200" key={set.code}>
+                    <img
+                      src={set.icon_svg_uri}
+                      className="items-center  w-6 fill-orange-200"
+                      alt=""
+                    />
                     <CommandItem
-                      className="text-sm text-start w-full ml-0"
+                      className="text-sm text-start w-full ml-0 hover:bg-orange-200 "
                       value={set.code}
                       onSelect={() => {
                         setValue(set.code);
                         setSelectedSetUri(set.search_uri);
+                        setShowNoSetMessage(false);
                         setOpen(false);
                       }}
                     >
