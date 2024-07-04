@@ -46,7 +46,7 @@ export function CardsList() {
   }, [selectedSetUri]);
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center bg-[url('magicLogo.svg')] bg-repeat-x bg-bottom bg-fixed">
       <nav className="h-24 flex items-center w-5/6 mb-6">
         <Link to={'/'}>
           <div className="flex justify-center gap-2">
