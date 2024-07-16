@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Hide scrollbar track and set thumb color */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #7c2d12 transparent; /* Thumb color black, track color transparent */
+}
+
+/* For Webkit browsers */
+body::-webkit-scrollbar {
+  width: 12px; /* Customize the width as needed */
+  height: 5px; /* Customize the height as needed */
+}
+
+body::-webkit-scrollbar-track {
+  background: transparent; /* Track color transparent */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: orange; /* Thumb color black */
+  border-radius: 20px; /* Customize the radius as needed */
+  border: 3px solid transparent; /* For some space around thumb */
+}
+
+/* Optional: Adjust scrollbar size on hover */
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Slightly lighter black for hover effect */
+}
