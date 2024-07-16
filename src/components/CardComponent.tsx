@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { Card } from "../views/cardsList";
-import { Heart, PlusCircle } from "lucide-react";
-import { toast } from "sonner";
+import { useEffect, useState } from 'react';
+import { Card } from '../views/cardsList';
+import { Heart, PlusCircle } from 'lucide-react';
+import { toast } from 'sonner';
 import {
   Dialog,
   DialogContent,
@@ -10,8 +10,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import axios from "axios";
+} from './ui/dialog';
+import axios from 'axios';
 
 interface CardViewProps {
   card: Card;
@@ -33,8 +33,8 @@ export function CardComponent({ card, setToDeckCards }: CardViewProps) {
   );
 
   const handleAddToDeck = () => {
-    toast("Card added", {
-      description: `${card.name} has been added to the deck!, ${card.set_name}`,
+    toast('Card added', {
+      description: `${card.quantity}x ${card.name} has been added to the deck!, ${card.set_name}`,
     });
     setToDeckCards(card);
   };
@@ -64,7 +64,7 @@ export function CardComponent({ card, setToDeckCards }: CardViewProps) {
         .get(prints_search_uri)
         .then((response) => setPrintVariants(response.data.data))
         .catch((error) =>
-          console.error("Error fetching print variants:", error)
+          console.error('Error fetching print variants:', error)
         );
     }
   }, [prints_search_uri]);
@@ -91,7 +91,7 @@ export function CardComponent({ card, setToDeckCards }: CardViewProps) {
           <div className="w-96 h-full flex flex-col justify-between">
             <div>
               <p className="text-2xl font-bold text-orange-800">
-                Mana Cost:{" "}
+                Mana Cost:{' '}
                 <span className="text-orange-700 font-normal"> {cmc}</span>
               </p>
             </div>
@@ -99,7 +99,7 @@ export function CardComponent({ card, setToDeckCards }: CardViewProps) {
               <p className="text-2xl font-bold text-orange-800">Text:</p>
               <p className="text-orange-700 text-xl">{oracle_text}</p>
             </div>
-            <div className={` ${flavor_text ? "block pr-4" : "hidden p-0"}`}>
+            <div className={` ${flavor_text ? 'block pr-4' : 'hidden p-0'}`}>
               <p className="text-2xl font-bold text-orange-800">Flavor Text:</p>
               <p className="text-xl text-orange-700">{flavor_text}</p>
             </div>
@@ -108,7 +108,7 @@ export function CardComponent({ card, setToDeckCards }: CardViewProps) {
                 <p>
                   <p
                     className={`text-2xl  text-orange-800 font-bold ${
-                      power && toughness ? "block pr-4" : "hidden p-0"
+                      power && toughness ? 'block pr-4' : 'hidden p-0'
                     }`}
                   >
                     P/T:
@@ -130,7 +130,7 @@ export function CardComponent({ card, setToDeckCards }: CardViewProps) {
             </div>
             <div>
               <p className="text-2xl font-bold text-orange-800">
-                Collection:{" "}
+                Collection:{' '}
                 <span className="text-orange-700 text-2xl capitalize font-normal">
                   {set_name}
                 </span>
@@ -158,7 +158,7 @@ export function CardComponent({ card, setToDeckCards }: CardViewProps) {
             </div>
             <div
               className={`max-w-20 overflow-auto ${
-                printVariants ? "block" : "bg-orange-800"
+                printVariants ? 'block' : 'bg-orange-800'
               } `}
             >
               <div className="size-16 cursor-pointer ">

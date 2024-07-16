@@ -1,10 +1,10 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { CardComponent } from "../components/CardComponent";
-import { Link } from "react-router-dom";
-import { Combobox } from "../components/ui/combobox";
-import { Input } from "../components/ui/input";
-import { Book } from "lucide-react";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { CardComponent } from '../components/CardComponent';
+import { Link } from 'react-router-dom';
+import { Combobox } from '../components/ui/combobox';
+import { Input } from '../components/ui/input';
+import { Book } from 'lucide-react';
 
 import {
   Sheet,
@@ -13,8 +13,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "../components/ui/sheet";
-import { Toaster } from "../components/ui/sonner";
+} from '../components/ui/sheet';
+import { Toaster } from '../components/ui/sonner';
 
 export interface Card {
   id: string;
@@ -37,11 +37,12 @@ export interface Card {
   type_line: string;
   oracle_text: string;
   setToDeckCards: () => void;
+  quantity: number;
 }
 
 export function CardsList() {
   const [cards, setCards] = useState<Card[]>([]);
-  const [selectedSetUri, setSelectedSetUri] = useState<string>("");
+  const [selectedSetUri, setSelectedSetUri] = useState<string>('');
   const [showNoSetMessage, setShowNoSetMessage] = useState<boolean>(true);
   const [toDeckCards, setToDeckCards] = useState<Card[]>([]);
 
@@ -53,7 +54,24 @@ export function CardsList() {
   };
 
   const addCardToDeck = (card: Card) => {
-    setToDeckCards((prevCards) => [...prevCards, card]); // Adds card to the deck
+    setToDeckCards((prevCards) => {
+      const updatedCards = [...prevCards];
+      const cardIndex = updatedCards.findIndex((c) => c.id === card.id);
+
+      if (cardIndex !== -1) {
+        updatedCards[cardIndex] = {
+          ...updatedCards[cardIndex],
+          quantity: updatedCards[cardIndex].quantity + 1,
+        };
+      } else {
+        updatedCards.push({
+          ...card,
+          quantity: 1,
+        });
+      }
+
+      return updatedCards;
+    });
   };
 
   useEffect(() => {
@@ -65,7 +83,7 @@ export function CardsList() {
   return (
     <div className="flex flex-col items-center justify-center bg-[url('magicLogo.svg')] bg-repeat-x bg-bottom bg-fixed">
       <nav className="h-24 flex items-center justify-between w-5/6 mb-6">
-        <Link to={"/"}>
+        <Link to={'/'}>
           <div className="flex justify-center gap-2">
             <p className="uppercase font-Karantina text-orange-800 text-4xl">
               Alexandria
@@ -91,17 +109,18 @@ export function CardsList() {
               <p className="text-orange-900">No cards added to deck</p>
             ) : (
               toDeckCards.map((card) => (
-                <div className=" mt-2 flex flex-row-reverse items-center justify-center gap-1">
-                  <div className=" text-orange-900 flex flex-1 font-bold">
-                    {card.name}
+                <div className=" mt-2 flex flex-row-reverse items-center justify-center gap-2">
+                  <div className=" text-orange-900 gap-1 flex flex-1 font-bold">
+                    <div className="font-medium"> {card.quantity}x</div>
+                    <div> {card.name}</div>
                   </div>
                   <div
-                    className=" w-20 rounded-md justify-center flex flex-row items-center"
+                    className=" w-16 rounded-md justify-center flex flex-row items-center"
                     style={{
                       backgroundImage: `url('${card.image_uris.small}')`,
-                      backgroundPosition: "center", // Custom position
-                      backgroundSize: "cover", // Optional: cover the entire element
-                      backgroundRepeat: "no-repeat", // Optional: prevent tiling
+                      backgroundPosition: 'center',
+                      backgroundSize: '110%',
+                      backgroundRepeat: 'no-repeat',
                     }}
                   >
                     ''
@@ -134,9 +153,9 @@ export function CardsList() {
       </div>
       <div className="flex align-middle justify-center items-center mt-20">
         <p
-          className={`text-orange-800 ${showNoSetMessage ? "block" : "hidden"}`}
+          className={`text-orange-800 ${showNoSetMessage ? 'block' : 'hidden'}`}
         >
-          No set selected, please{" "}
+          No set selected, please{' '}
           <span className="text-orange-900 font-bold">select a set</span>.
         </p>
       </div>
