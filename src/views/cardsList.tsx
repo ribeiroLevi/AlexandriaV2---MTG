@@ -1,9 +1,19 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { CardComponent } from '../components/CardComponent';
-import { Link } from 'react-router-dom';
-import { Combobox } from '../components/ui/combobox';
-import { Input } from '../components/ui/input';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { CardComponent } from "../components/CardComponent";
+import { Link } from "react-router-dom";
+import { Combobox } from "../components/ui/combobox";
+import { Input } from "../components/ui/input";
+import { Book } from "lucide-react";
+
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../components/ui/sheet";
 
 export interface Card {
   id: string;
@@ -25,18 +35,24 @@ export interface Card {
   prints_search_uri: string;
   type_line: string;
   oracle_text: string;
+  setToDeckCards: () => void;
 }
 
 export function CardsList() {
   const [cards, setCards] = useState<Card[]>([]);
-  const [selectedSetUri, setSelectedSetUri] = useState<string>('');
+  const [selectedSetUri, setSelectedSetUri] = useState<string>("");
   const [showNoSetMessage, setShowNoSetMessage] = useState<boolean>(true);
+  const [toDeckCards, setToDeckCards] = useState<Card[]>([]);
 
   const getCards = (uri: string) => {
     axios
       .get(uri)
       .then((response) => setCards(response.data.data))
       .catch((err) => console.log(err));
+  };
+
+  const addCardToDeck = (card: Card) => {
+    setToDeckCards((prevCards) => [...prevCards, card]); // Adds card to the deck
   };
 
   useEffect(() => {
@@ -47,8 +63,8 @@ export function CardsList() {
 
   return (
     <div className="flex flex-col items-center justify-center bg-[url('magicLogo.svg')] bg-repeat-x bg-bottom bg-fixed">
-      <nav className="h-24 flex items-center w-5/6 mb-6">
-        <Link to={'/'}>
+      <nav className="h-24 flex items-center justify-between w-5/6 mb-6">
+        <Link to={"/"}>
           <div className="flex justify-center gap-2">
             <p className="uppercase font-Karantina text-orange-800 text-4xl">
               Alexandria
@@ -56,6 +72,27 @@ export function CardsList() {
             <img className="w-7" src="alexandriaLogo.svg" alt="" />
           </div>
         </Link>
+
+        <Sheet>
+          <SheetTrigger>
+            <Book className="text-orange-900" />
+          </SheetTrigger>
+          <SheetContent className="bg-orange-200">
+            <SheetHeader>
+              <SheetTitle className="text-orange-900 text-3xl font-bold">
+                Deck
+              </SheetTitle>
+              <SheetDescription className="text-md text-orange-900 ">
+                Here you can save cards to your deck and export it as .txt
+              </SheetDescription>
+            </SheetHeader>
+            {toDeckCards.length === 0 ? (
+              <p className="text-orange-900">No cards added to deck</p>
+            ) : (
+              toDeckCards.map((card) => <div> {card.name}</div>)
+            )}
+          </SheetContent>
+        </Sheet>
       </nav>
       <div className="w-5/6 gap-4 grid grid-cols-2">
         <Input />
@@ -68,16 +105,20 @@ export function CardsList() {
         <ul>
           <li className="grid md:grid-cols-2 lg:grid-cols-4 ">
             {cards.map((card, key) => (
-              <CardComponent key={key} card={card} />
+              <CardComponent
+                key={key}
+                card={card}
+                setToDeckCards={addCardToDeck}
+              />
             ))}
           </li>
         </ul>
       </div>
       <div className="flex align-middle justify-center items-center mt-20">
         <p
-          className={`text-orange-800 ${showNoSetMessage ? 'block' : 'hidden'}`}
+          className={`text-orange-800 ${showNoSetMessage ? "block" : "hidden"}`}
         >
-          No set selected, please{' '}
+          No set selected, please{" "}
           <span className="text-orange-900 font-bold">select a set</span>.
         </p>
       </div>
