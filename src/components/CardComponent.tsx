@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card } from "../views/cardsList";
 import { Heart, PlusCircle } from "lucide-react";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -32,7 +33,10 @@ export function CardComponent({ card, setToDeckCards }: CardViewProps) {
   );
 
   const handleAddToDeck = () => {
-    setToDeckCards(card); // Assuming you want to add this card to the deck
+    toast("Card added", {
+      description: `${card.name} has been added to the deck!, ${card.set_name}`,
+    });
+    setToDeckCards(card);
   };
 
   const {
@@ -134,8 +138,9 @@ export function CardComponent({ card, setToDeckCards }: CardViewProps) {
             </div>
             <div className="flex flex-row gap-3 ">
               <Heart className="stroke-orange-800 size-7" />
+
               <PlusCircle
-                className="stroke-orange-800 size-7"
+                className="stroke-orange-800 size-7 cursor-pointer"
                 onClick={handleAddToDeck}
               />
             </div>

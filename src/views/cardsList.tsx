@@ -14,6 +14,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../components/ui/sheet";
+import { Toaster } from "../components/ui/sonner";
 
 export interface Card {
   id: string;
@@ -89,7 +90,24 @@ export function CardsList() {
             {toDeckCards.length === 0 ? (
               <p className="text-orange-900">No cards added to deck</p>
             ) : (
-              toDeckCards.map((card) => <div> {card.name}</div>)
+              toDeckCards.map((card) => (
+                <div className=" mt-2 flex flex-row-reverse items-center justify-center gap-1">
+                  <div className=" text-orange-900 flex flex-1 font-bold">
+                    {card.name}
+                  </div>
+                  <div
+                    className=" w-20 rounded-md justify-center flex flex-row items-center"
+                    style={{
+                      backgroundImage: `url('${card.image_uris.small}')`,
+                      backgroundPosition: "center", // Custom position
+                      backgroundSize: "cover", // Optional: cover the entire element
+                      backgroundRepeat: "no-repeat", // Optional: prevent tiling
+                    }}
+                  >
+                    ''
+                  </div>
+                </div>
+              ))
             )}
           </SheetContent>
         </Sheet>
@@ -122,6 +140,7 @@ export function CardsList() {
           <span className="text-orange-900 font-bold">select a set</span>.
         </p>
       </div>
+      <Toaster />
     </div>
   );
 }
