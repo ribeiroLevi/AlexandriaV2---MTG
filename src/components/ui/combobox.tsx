@@ -44,14 +44,14 @@ export function Combobox({
   }, []);
 
   return (
-    <div>
+    <div className='trucate'>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-1/2 items-center justify-between h-10 border-2 border-orange-800 bg-orange-800 text-orange-200 hover:border-orange-800 hover:bg-orange-200 hover:text-orange-800"
+            className="truncate w-1/2 items-center justify-between h-10 border-2 border-orange-800 bg-orange-800 text-orange-200 hover:border-orange-800 hover:bg-orange-200 hover:text-orange-800"
           >
             {value ? sets.find((set) => set.code === value)?.name : 'Set...'}
             <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 " />
@@ -60,7 +60,7 @@ export function Combobox({
         <PopoverContent className="w-full p-0 ">
           <Command className="bg-orange-800 text-orange-200">
             <CommandInput
-              className=" placeholder:text-orange-200"
+              className="placeholder:text-orange-200"
               placeholder="Search set..."
             />
             <CommandList>
@@ -70,7 +70,7 @@ export function Combobox({
                   <div className="flex flex-row text-orange-200" key={set.code}>
                     <img
                       src={set.icon_svg_uri}
-                      className="items-center  w-6 fill-orange-200"
+                      className="items-center text-orange-200 w-6 fill-orange-200"
                       alt=""
                     />
                     <CommandItem

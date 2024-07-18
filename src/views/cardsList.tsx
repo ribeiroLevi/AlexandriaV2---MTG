@@ -4,7 +4,7 @@ import { CardComponent } from '../components/CardComponent';
 import { Link } from 'react-router-dom';
 import { Combobox } from '../components/ui/combobox';
 import { Input } from '../components/ui/input';
-import { Book } from 'lucide-react';
+import { Book, Heart } from 'lucide-react';
 
 import {
   Sheet,
@@ -38,6 +38,10 @@ export interface Card {
   oracle_text: string;
   setToDeckCards: () => void;
   quantity: number;
+}
+
+export interface FavoriteCardProp{
+  setFavoriteCards: (card: Card) => void;
 }
 
 export function CardsList() {
@@ -91,7 +95,8 @@ export function CardsList() {
             <img className="w-7" src="alexandriaLogo.svg" alt="" />
           </div>
         </Link>
-
+        <div className='flex flex-row gap-3 text-orange-900'>
+          <Heart/>
         <Sheet>
           <SheetTrigger>
             <Book className="text-orange-900" />
@@ -114,22 +119,16 @@ export function CardsList() {
                     <div className="font-medium"> {card.quantity}x</div>
                     <div> {card.name}</div>
                   </div>
-                  <div
-                    className=" w-16 rounded-md justify-center flex flex-row items-center"
-                    style={{
-                      backgroundImage: `url('${card.image_uris.small}')`,
-                      backgroundPosition: 'center',
-                      backgroundSize: '110%',
-                      backgroundRepeat: 'no-repeat',
-                    }}
-                  >
-                    ''
+                  <div >
+                    <img className="w-16 h-6 object-cover  rounded-md justify-center flex flex-row items-center" src={card.image_uris.art_crop} alt="" />
                   </div>
                 </div>
               ))
             )}
           </SheetContent>
         </Sheet>
+        </div>
+        
       </nav>
       <div className="w-5/6 gap-4 grid grid-cols-2">
         <Input />

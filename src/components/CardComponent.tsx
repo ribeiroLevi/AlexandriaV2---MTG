@@ -16,6 +16,7 @@ import axios from 'axios';
 interface CardViewProps {
   card: Card;
   setToDeckCards: (card: Card) => void;
+
 }
 
 interface PrintVariant {
@@ -26,17 +27,23 @@ interface PrintVariant {
   name: string;
 }
 
-export function CardComponent({ card, setToDeckCards }: CardViewProps) {
+
+export function CardComponent({ card, setToDeckCards}: CardViewProps) {
   const [printVariants, setPrintVariants] = useState<PrintVariant[]>([]);
   const [selectedImageUri, setSelectedImageUri] = useState<string>(
     card.image_uris?.normal
   );
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
   const handleAddToDeck = () => {
     toast('Card added', {
       description: `${card.quantity}x ${card.name} has been added to the deck!, ${card.set_name}`,
     });
     setToDeckCards(card);
+  };
+
+  const handleAddToFavorites = () => {
+    setIsFavorite(!isFavorite)
   };
 
   const {
@@ -74,11 +81,11 @@ export function CardComponent({ card, setToDeckCards }: CardViewProps) {
       <div className=" hover:scale-125 w-80 mx-6 my-6 hover:cursor-pointer transition-all ease-in-out delay-150">
         {image_uris && image_uris.normal && (
           <DialogTrigger>
-            <img id={id} src={image_uris.normal} className="rounded-xl" />
+            <img id={id} src={image_uris.large} className="rounded-xl" />
           </DialogTrigger>
         )}
       </div>
-      <DialogContent className="w-[1000px] bg-orange-200 bg-[url('magicLogo.svg')]">
+      <DialogContent className=" w-full lg:w-[1000px] bg-orange-200 bg-[url('magicLogo.svg')]">
         <DialogHeader>
           <DialogTitle className="text-4xl font-bold text-orange-800">
             {name}
@@ -137,8 +144,10 @@ export function CardComponent({ card, setToDeckCards }: CardViewProps) {
               </p>
             </div>
             <div className="flex flex-row gap-3 ">
-              <Heart className="stroke-orange-800 size-7" />
-
+            <Heart
+                className={`stroke-orange-900 cursor-pointer size-7 ${isFavorite ? 'fill-orange-900' : 'fill-orange-200'}`}
+                onClick={handleAddToFavorites}
+              />
               <PlusCircle
                 className="stroke-orange-800 size-7 cursor-pointer"
                 onClick={handleAddToDeck}
