@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from './ui/dialog';
 import axios from 'axios';
+import { useFavorites } from '../context/UseFavorites';
 
 interface CardViewProps {
   card: Card;
@@ -34,6 +35,8 @@ export function CardComponent({ card, setToDeckCards}: CardViewProps) {
     card.image_uris?.normal
   );
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
+
+  const {isOnFavoriteList, toggleFavorites} = useFavorites()
 
   const handleAddToDeck = () => {
     toast('Card added', {
@@ -88,7 +91,8 @@ export function CardComponent({ card, setToDeckCards}: CardViewProps) {
       <DialogContent className=" w-full lg:w-[1000px] bg-orange-200 bg-[url('magicLogo.svg')]">
         <DialogHeader>
           <DialogTitle className="text-4xl font-bold text-orange-800">
-            {name}
+            {name}<br/>
+            {id}
           </DialogTitle>
           <DialogDescription className="text-2xl text-orange-800">
             {type_line}
@@ -145,8 +149,8 @@ export function CardComponent({ card, setToDeckCards}: CardViewProps) {
             </div>
             <div className="flex flex-row gap-3 ">
             <Heart
-                className={`stroke-orange-900 cursor-pointer size-7 ${isFavorite ? 'fill-orange-900' : 'fill-orange-200'}`}
-                onClick={handleAddToFavorites}
+                className={`stroke-orange-900 cursor-pointer size-7 ${isOnFavoriteList(id) ? 'fill-orange-900' : 'fill-orange-200'}`}
+                onClick={() => toggleFavorites(id)}
               />
               <PlusCircle
                 className="stroke-orange-800 size-7 cursor-pointer"
@@ -163,7 +167,6 @@ export function CardComponent({ card, setToDeckCards}: CardViewProps) {
                   className="rounded-3xl w-96"
                 />
               )}
-              {}
             </div>
             <div
               className={`max-w-20 overflow-auto ${

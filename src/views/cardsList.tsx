@@ -38,10 +38,11 @@ export interface Card {
   oracle_text: string;
   setToDeckCards: () => void;
   quantity: number;
+  favoriteCard: Card
 }
 
 export interface FavoriteCardProp{
-  setFavoriteCards: (card: Card) => void;
+  setFavoriteCards: (card: Card[]) => void;
 }
 
 export function CardsList() {
@@ -96,7 +97,10 @@ export function CardsList() {
           </div>
         </Link>
         <div className='flex flex-row gap-3 text-orange-900'>
-          <Heart/>
+          <Link to={'/favoriteCards'}>
+            <Heart className='cursor-pointer'/>
+          </Link>
+
         <Sheet>
           <SheetTrigger>
             <Book className="text-orange-900" />

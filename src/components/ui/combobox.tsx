@@ -66,7 +66,8 @@ export function Combobox({
             <CommandList>
               <CommandEmpty>No set found.</CommandEmpty>
               <CommandGroup>
-                {sets.map((set) => (
+                {sets.map((set) =>
+                (
                   <div className="flex flex-row text-orange-200" key={set.code}>
                     <img
                       src={set.icon_svg_uri}
@@ -84,14 +85,14 @@ export function Combobox({
                       }}
                     >
                       <Check
-                        className={`mr-2 h-4 w-4 ${
-                          value === set.code ? 'opacity-100' : 'opacity-0'
-                        }`}
+                        className={`mr-2 h-4 w-4 ${value === set.code ? 'opacity-100' : 'opacity-0'
+                          }`}
                       />
                       {set.name}
                     </CommandItem>
                   </div>
-                ))}
+                )
+                )}
               </CommandGroup>
             </CommandList>
           </Command>

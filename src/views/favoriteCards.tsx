@@ -1,3 +1,15 @@
-export function FavoriteCards(){
-    return <h1>Hello World</h1>
+import { useFavorites } from "../context/UseFavorites"
+
+export function FavoriteCards() {
+    const { favoriteCards } = useFavorites()
+
+    return (
+        <div>
+            {favoriteCards.map((card: String) =>
+                <p>{card}</p>
+            )}
+            <h1>TESTE</h1>
+        </div>
+
+    )
 }
