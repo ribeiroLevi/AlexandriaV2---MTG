@@ -38,13 +38,12 @@ export interface Card {
   oracle_text: string;
   setToDeckCards: () => void;
   quantity: number;
-  favoriteCard: Card
+  favoriteCard: Card;
 }
 
-export interface FavoriteCardProp{
+export interface FavoriteCardProp {
   setFavoriteCards: (card: Card[]) => void;
 }
-
 export function CardsList() {
   const [cards, setCards] = useState<Card[]>([]);
   const [selectedSetUri, setSelectedSetUri] = useState<string>('');
@@ -85,6 +84,13 @@ export function CardsList() {
     }
   }, [selectedSetUri]);
 
+  /*function handleCardListDelete(card: Card): void {
+    setToDeckCards((prevCard: Card) => {
+      const updatedCards = {...prevCard}
+
+    });
+  }*/
+
   return (
     <div className="flex flex-col items-center justify-center bg-[url('magicLogo.svg')] bg-repeat-x bg-bottom bg-fixed">
       <nav className="h-24 flex items-center justify-between w-5/6 mb-6">
@@ -96,43 +102,52 @@ export function CardsList() {
             <img className="w-7" src="alexandriaLogo.svg" alt="" />
           </div>
         </Link>
-        <div className='flex flex-row gap-3 text-orange-900'>
+        <div className="flex flex-row gap-3 text-orange-900">
           <Link to={'/favoriteCards'}>
-            <Heart className='cursor-pointer'/>
+            <Heart className="cursor-pointer" />
           </Link>
 
-        <Sheet>
-          <SheetTrigger>
-            <Book className="text-orange-900" />
-          </SheetTrigger>
-          <SheetContent className="bg-orange-200">
-            <SheetHeader>
-              <SheetTitle className="text-orange-900 text-3xl font-bold">
-                Deck
-              </SheetTitle>
-              <SheetDescription className="text-md text-orange-900 ">
-                Here you can save cards to your deck and export it as .txt
-              </SheetDescription>
-            </SheetHeader>
-            {toDeckCards.length === 0 ? (
-              <p className="text-orange-900">No cards added to deck</p>
-            ) : (
-              toDeckCards.map((card) => (
-                <div className=" mt-2 flex flex-row-reverse items-center justify-center gap-2">
-                  <div className=" text-orange-900 gap-1 flex flex-1 font-bold">
-                    <div className="font-medium"> {card.quantity}x</div>
-                    <div> {card.name}</div>
+          <Sheet>
+            <SheetTrigger>
+              <Book className="text-orange-900" />
+            </SheetTrigger>
+            <SheetContent className="bg-orange-200">
+              <SheetHeader>
+                <SheetTitle className="text-orange-900 text-3xl font-bold">
+                  Deck
+                </SheetTitle>
+                <SheetDescription className="text-md text-orange-900 ">
+                  Here you can save cards to your deck and export it as .txt
+                </SheetDescription>
+              </SheetHeader>
+              {toDeckCards.length === 0 ? (
+                <p className="text-orange-900">No cards added to deck</p>
+              ) : (
+                toDeckCards.map((card) => (
+                  <div className=" mt-2 flex flex-row-reverse items-center justify-center gap-2">
+                    <div
+                      //~~onClick={() => handleCardListDelete}
+                      className="cursor-pointer font-bold text-orange-900"
+                    >
+                      X
+                    </div>
+                    <div className=" text-orange-900 gap-1 flex flex-1 font-bold">
+                      <div className="font-medium"> {card.quantity}x</div>
+                      <div> {card.name}</div>
+                    </div>
+                    <div>
+                      <img
+                        className="w-16 h-6 object-cover rounded-md justify-center flex flex-row items-center"
+                        src={card.image_uris.art_crop}
+                        alt=""
+                      />
+                    </div>
                   </div>
-                  <div >
-                    <img className="w-16 h-6 object-cover  rounded-md justify-center flex flex-row items-center" src={card.image_uris.art_crop} alt="" />
-                  </div>
-                </div>
-              ))
-            )}
-          </SheetContent>
-        </Sheet>
+                ))
+              )}
+            </SheetContent>
+          </Sheet>
         </div>
-        
       </nav>
       <div className="w-5/6 gap-4 grid grid-cols-2">
         <Input />
