@@ -92,7 +92,6 @@ export function CardComponent({ card, setToDeckCards}: CardViewProps) {
         <DialogHeader>
           <DialogTitle className="text-4xl font-bold text-orange-800">
             {name}<br/>
-            {id}
           </DialogTitle>
           <DialogDescription className="text-2xl text-orange-800">
             {type_line}

@@ -4,7 +4,7 @@ import { CardComponent } from '../components/CardComponent';
 import { Link } from 'react-router-dom';
 import { Combobox } from '../components/ui/combobox';
 import { Input } from '../components/ui/input';
-import { Book, Heart } from 'lucide-react';
+import { Book, Heart, Key } from 'lucide-react';
 
 import {
   Sheet,
@@ -78,18 +78,30 @@ export function CardsList() {
     });
   };
 
+  const handleCardListDelete = (card: Card): void => {
+    if (card.quantity > 1) {
+      console.log(card.quantity)
+
+      const newCards = [...toDeckCards]
+      const oldCard = toDeckCards.find((item) => item.id === card.id)
+
+      if (!oldCard) return
+
+      const index = toDeckCards.findIndex((item) => item.id === oldCard.id)
+
+      newCards[index] = {
+        ...oldCard, quantity: oldCard.quantity - 1
+      }
+
+      setToDeckCards(newCards)
+    }
+  }
+
   useEffect(() => {
     if (selectedSetUri) {
       getCards(selectedSetUri);
     }
   }, [selectedSetUri]);
-
-  /*function handleCardListDelete(card: Card): void {
-    setToDeckCards((prevCard: Card) => {
-      const updatedCards = {...prevCard}
-
-    });
-  }*/
 
   return (
     <div className="flex flex-col items-center justify-center bg-[url('magicLogo.svg')] bg-repeat-x bg-bottom bg-fixed">
@@ -124,9 +136,9 @@ export function CardsList() {
                 <p className="text-orange-900">No cards added to deck</p>
               ) : (
                 toDeckCards.map((card) => (
-                  <div className=" mt-2 flex flex-row-reverse items-center justify-center gap-2">
+                  <div className="mt-2 flex flex-row-reverse items-center justify-center gap-2">
                     <div
-                      //~~onClick={() => handleCardListDelete}
+                      onClick={() => handleCardListDelete(card)}
                       className="cursor-pointer font-bold text-orange-900"
                     >
                       X
@@ -156,12 +168,12 @@ export function CardsList() {
           setShowNoSetMessage={setShowNoSetMessage}
         />
       </div>
-      <div className="w-5/6 flex flex-col">
+      <div className="-ml-14  w-5/6 flex flex-col">
         <ul>
-          <li className="grid md:grid-cols-2 lg:grid-cols-4 ">
-            {cards.map((card, key) => (
+          <li className="grid gap-x-14 md:grid-cols-3 lg:grid-cols-5 ">
+            {cards.map((card) => (
               <CardComponent
-                key={key}
+                key={card.id}
                 card={card}
                 setToDeckCards={addCardToDeck}
               />
