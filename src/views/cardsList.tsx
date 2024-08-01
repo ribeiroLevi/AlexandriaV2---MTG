@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { CardComponent } from '../components/CardComponent';
 import { Link } from 'react-router-dom';
 import { Combobox } from '../components/ui/combobox';
-import { Input } from '../components/ui/input';
 import { Book, Heart } from 'lucide-react';
 
 import {
@@ -15,6 +14,7 @@ import {
   SheetTrigger,
 } from '../components/ui/sheet';
 import { Toaster } from '../components/ui/sonner';
+import { Input } from '../components/ui/input';
 
 export interface Card {
   id: string;
@@ -129,6 +129,7 @@ export function CardsList() {
       getCards(selectedSetUri);
     }
   }, [selectedSetUri]);
+  
 
   return (
     <div className="flex flex-col items-center justify-center bg-[url('magicLogo.svg')] bg-repeat-x bg-bottom bg-fixed">
@@ -193,7 +194,7 @@ export function CardsList() {
         </div>
       </nav>
       <div className="w-5/6 gap-4 grid grid-cols-2">
-        <Input />
+        <Input  cards={cards} setCards={setCards} />
         <Combobox
           setSelectedSetUri={setSelectedSetUri}
           setShowNoSetMessage={setShowNoSetMessage}
@@ -201,7 +202,7 @@ export function CardsList() {
       </div>
       <div className="-ml-14  w-5/6 flex flex-col">
         <ul>
-          <li className="grid gap-x-14 md:grid-cols-3 lg:grid-cols-5 ">
+          <li className="grid gap-x-14 md:grid-cols-3 mb-0 lg:grid-cols-5 ">
             {cards.map((card) => (
               <CardComponent
                 key={card.id}

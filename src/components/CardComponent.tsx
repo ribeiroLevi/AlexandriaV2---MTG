@@ -75,10 +75,10 @@ export function CardComponent({ card, setToDeckCards }: CardViewProps) {
 
   return (
     <Dialog onOpenChange={() => setSelectedImageUri(image_uris.normal)}>
-      <div className=" hover:scale-125 w-80 mx-6 my-6 hover:cursor-pointer transition-all ease-in-out delay-150">
+      <div className=" hover:scale-125 w-80 mt-2 mx-6 hover:cursor-pointer transition-all ease-in-out delay-150">
         {image_uris && image_uris.normal && (
           <DialogTrigger>
-            <img id={id} src={image_uris.large} className="rounded-xl" />
+            <img id={id} src={image_uris.large} className="rounded-xl " />
           </DialogTrigger>
         )}
       </div>
