@@ -4,7 +4,7 @@ import { CardComponent } from '../components/CardComponent';
 import { Link } from 'react-router-dom';
 import { Combobox } from '../components/ui/combobox';
 import { Input } from '../components/ui/input';
-import { Book, Heart, Key } from 'lucide-react';
+import { Book, Heart } from 'lucide-react';
 
 import {
   Sheet,
@@ -50,6 +50,28 @@ export function CardsList() {
   const [showNoSetMessage, setShowNoSetMessage] = useState<boolean>(true);
   const [toDeckCards, setToDeckCards] = useState<Card[]>([]);
 
+  const handleClearButton = () => {
+    setToDeckCards([])
+  }
+
+  const handleExportCardsToList = () => {
+    if (toDeckCards.length === 0) {
+      alert('NÃO POSSUI CARTAS AINDA')
+    }
+    else{
+      const fileData = toDeckCards
+      .map((card) => `${card.quantity}x ${card.name}\n`)
+      .join('');
+      const blob = new Blob([fileData], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.download = 'list.txt';
+      link.href = url;
+      link.click();
+      console.log(fileData);
+    }
+  }
+
   const getCards = (uri: string) => {
     axios
       .get(uri)
@@ -94,6 +116,11 @@ export function CardsList() {
       }
 
       setToDeckCards(newCards)
+    }
+    else {
+      const lastCardIndex = toDeckCards.findIndex((item => item.id === card.id))
+      const newCards = [...toDeckCards.slice(0, lastCardIndex), ...toDeckCards.slice(lastCardIndex + 1)]
+      setToDeckCards(newCards);
     }
   }
 
@@ -157,6 +184,10 @@ export function CardsList() {
                   </div>
                 ))
               )}
+              <div className='w-full flex justify-between gap-3'>
+                <button className='w-1/2 bg-orange-900 rounded-md h-10 mt-3 font-bold text-orange-200' onClick={handleExportCardsToList}>EXPORT</button>
+                <button onClick={handleClearButton} className='w-1/2 bg-none border-2 text-orange-900 font-bold rounded-md h-10 mt-3 border-orange-900'>CLEAR DECK</button>
+              </div>
             </SheetContent>
           </Sheet>
         </div>

@@ -13,7 +13,6 @@ import {
 } from './ui/dialog';
 import axios from 'axios';
 import { useFavorites } from '../context/UseFavorites';
-
 interface CardViewProps {
   card: Card;
   setToDeckCards: (card: Card) => void;
@@ -29,24 +28,19 @@ interface PrintVariant {
 }
 
 
-export function CardComponent({ card, setToDeckCards}: CardViewProps) {
+export function CardComponent({ card, setToDeckCards }: CardViewProps) {
   const [printVariants, setPrintVariants] = useState<PrintVariant[]>([]);
   const [selectedImageUri, setSelectedImageUri] = useState<string>(
     card.image_uris?.normal
   );
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
-  const {isOnFavoriteList, toggleFavorites} = useFavorites()
+  const { isOnFavoriteList, toggleFavorites } = useFavorites()
 
   const handleAddToDeck = () => {
     toast('Card added', {
       description: `${card.quantity}x ${card.name} has been added to the deck!, ${card.set_name}`,
     });
     setToDeckCards(card);
-  };
-
-  const handleAddToFavorites = () => {
-    setIsFavorite(!isFavorite)
   };
 
   const {
@@ -91,63 +85,64 @@ export function CardComponent({ card, setToDeckCards}: CardViewProps) {
       <DialogContent className=" w-full lg:w-[1000px] bg-orange-200 bg-[url('magicLogo.svg')]">
         <DialogHeader>
           <DialogTitle className="text-4xl font-bold text-orange-800">
-            {name}<br/>
+            {name}<br />
           </DialogTitle>
           <DialogDescription className="text-2xl text-orange-800">
             {type_line}
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-row items-center justify-around">
-          <div className="w-96 h-full flex flex-col justify-between">
-            <div>
-              <p className="text-2xl font-bold text-orange-800">
-                Mana Cost:{' '}
-                <span className="text-orange-700 font-normal"> {cmc}</span>
-              </p>
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-orange-800">Text:</p>
-              <p className="text-orange-700 text-xl">{oracle_text}</p>
-            </div>
-            <div className={` ${flavor_text ? 'block pr-4' : 'hidden p-0'}`}>
-              <p className="text-2xl font-bold text-orange-800">Flavor Text:</p>
-              <p className="text-xl text-orange-700">{flavor_text}</p>
-            </div>
-            <div className="flex flex-row">
-              <div>
-                <p>
-                  <p
-                    className={`text-2xl  text-orange-800 font-bold ${
-                      power && toughness ? 'block pr-4' : 'hidden p-0'
-                    }`}
-                  >
-                    P/T:
-                    <span className="text-orange-700 text-2xl font-normal pl-2">
-                      {power}/{toughness}
-                    </span>
-                  </p>
+
+        <div className="flex flex-row items-center justify-between">
+          <div className='flex flex-col justify-start h-full'>
+            <div className="w-96 gap-4 h-full flex flex-col justify-start">
+              <div >
+                <p className="text-2xl font-bold text-orange-800">
+                  Mana Cost:{' '}
+                  <span className="text-orange-700 font-normal"> {cmc}</span>
                 </p>
               </div>
-
               <div>
-                <p className="text-2xl font-bold text-orange-800 ">
-                  Rarity:
-                  <span className="text-orange-700 text-2xl capitalize pl-2 font-normal">
-                    {rarity}
+                <p className="text-2xl font-bold text-orange-800">Text:</p>
+                <p className="text-orange-700 text-xl">{oracle_text}</p>
+              </div>
+              <div className={` ${flavor_text ? 'block pr-4' : 'hidden p-0'}`}>
+                <p className="text-2xl font-bold text-orange-800">Flavor Text:</p>
+                <p className="text-xl text-orange-700">{flavor_text}</p>
+              </div>
+              <div className="flex flex-row">
+                <div>
+                  <p>
+                    <p
+                      className={`text-2xl  text-orange-800 font-bold ${power && toughness ? 'block pr-4' : 'hidden p-0'
+                        }`}
+                    >
+                      P/T:
+                      <span className="text-orange-700 text-2xl font-normal pl-2">
+                        {power}/{toughness}
+                      </span>
+                    </p>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-orange-800 ">
+                    Rarity:
+                    <span className="text-orange-700 text-2xl capitalize pl-2 font-normal">
+                      {rarity}
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-orange-800">
+                  Collection:{' '}
+                  <span className="text-orange-700 text-2xl capitalize font-normal">
+                    {set_name}
                   </span>
                 </p>
               </div>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-orange-800">
-                Collection:{' '}
-                <span className="text-orange-700 text-2xl capitalize font-normal">
-                  {set_name}
-                </span>
-              </p>
-            </div>
             <div className="flex flex-row gap-3 ">
-            <Heart
+              <Heart
                 className={`stroke-orange-900 cursor-pointer size-7 ${isOnFavoriteList(id) ? 'fill-orange-900' : 'fill-orange-200'}`}
                 onClick={() => toggleFavorites(id)}
               />
@@ -159,8 +154,9 @@ export function CardComponent({ card, setToDeckCards}: CardViewProps) {
           </div>
           <div className="flex flex-row gap-4">
             <div>
+              
               {image_uris && image_uris.normal && (
-                <img
+                   <img
                   id={id}
                   src={selectedImageUri}
                   className="rounded-3xl w-96"
@@ -168,9 +164,8 @@ export function CardComponent({ card, setToDeckCards}: CardViewProps) {
               )}
             </div>
             <div
-              className={`max-w-20 overflow-auto ${
-                printVariants ? 'block' : 'bg-orange-800'
-              } `}
+              className={`max-w-20 overflow-auto ${printVariants ? 'block' : 'bg-orange-800'
+                } `}
             >
               <div className="size-16 cursor-pointer ">
                 {printVariants.map((variant) => (
