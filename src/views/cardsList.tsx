@@ -58,10 +58,10 @@ export function CardsList() {
     if (toDeckCards.length === 0) {
       alert('NÃO POSSUI CARTAS AINDA')
     }
-    else{
+    else {
       const fileData = toDeckCards
-      .map((card) => `${card.quantity}x ${card.name}\n`)
-      .join('');
+        .map((card) => `${card.quantity}x ${card.name}\n`)
+        .join('');
       const blob = new Blob([fileData], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -129,7 +129,7 @@ export function CardsList() {
       getCards(selectedSetUri);
     }
   }, [selectedSetUri]);
-  
+
 
   return (
     <div className="flex flex-col items-center justify-center bg-[url('magicLogo.svg')] bg-repeat-x bg-bottom bg-fixed">
@@ -194,23 +194,24 @@ export function CardsList() {
         </div>
       </nav>
       <div className="w-5/6 gap-4 grid grid-cols-2">
-        <Input  cards={cards} setCards={setCards} />
+        <Input cards={cards} setCards={setCards} />
         <Combobox
           setSelectedSetUri={setSelectedSetUri}
           setShowNoSetMessage={setShowNoSetMessage}
         />
       </div>
-      <div className="-ml-14  w-5/6 flex flex-col">
-        <ul>
-          <li className="grid gap-x-14 md:grid-cols-3 mb-0 lg:grid-cols-5 ">
-            {cards.map((card) => (
+      <div className="w-5/6 flex flex-col">
+        <ul className='grid grid-cols-4 gap-x-6 -ml-6 w-full'>
+          {cards.map((card) => (
+            <li className=" w-[335px]">
               <CardComponent
                 key={card.id}
                 card={card}
                 setToDeckCards={addCardToDeck}
               />
-            ))}
-          </li>
+            </li>
+          ))}
+
         </ul>
       </div>
       <div className="flex align-middle justify-center items-center mt-20">
