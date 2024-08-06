@@ -51,14 +51,13 @@ export function CardsList() {
   const [toDeckCards, setToDeckCards] = useState<Card[]>([]);
 
   const handleClearButton = () => {
-    setToDeckCards([])
-  }
+    setToDeckCards([]);
+  };
 
   const handleExportCardsToList = () => {
     if (toDeckCards.length === 0) {
-      alert('NÃO POSSUI CARTAS AINDA')
-    }
-    else {
+      alert('NÃO POSSUI CARTAS AINDA');
+    } else {
       const fileData = toDeckCards
         .map((card) => `${card.quantity}x ${card.name}\n`)
         .join('');
@@ -70,7 +69,7 @@ export function CardsList() {
       link.click();
       console.log(fileData);
     }
-  }
+  };
 
   const getCards = (uri: string) => {
     axios
@@ -102,34 +101,38 @@ export function CardsList() {
 
   const handleCardListDelete = (card: Card): void => {
     if (card.quantity > 1) {
-      console.log(card.quantity)
+      console.log(card.quantity);
 
-      const newCards = [...toDeckCards]
-      const oldCard = toDeckCards.find((item) => item.id === card.id)
+      const newCards = [...toDeckCards];
+      const oldCard = toDeckCards.find((item) => item.id === card.id);
 
-      if (!oldCard) return
+      if (!oldCard) return;
 
-      const index = toDeckCards.findIndex((item) => item.id === oldCard.id)
+      const index = toDeckCards.findIndex((item) => item.id === oldCard.id);
 
       newCards[index] = {
-        ...oldCard, quantity: oldCard.quantity - 1
-      }
+        ...oldCard,
+        quantity: oldCard.quantity - 1,
+      };
 
-      setToDeckCards(newCards)
-    }
-    else {
-      const lastCardIndex = toDeckCards.findIndex((item => item.id === card.id))
-      const newCards = [...toDeckCards.slice(0, lastCardIndex), ...toDeckCards.slice(lastCardIndex + 1)]
+      setToDeckCards(newCards);
+    } else {
+      const lastCardIndex = toDeckCards.findIndex(
+        (item) => item.id === card.id
+      );
+      const newCards = [
+        ...toDeckCards.slice(0, lastCardIndex),
+        ...toDeckCards.slice(lastCardIndex + 1),
+      ];
       setToDeckCards(newCards);
     }
-  }
+  };
 
   useEffect(() => {
     if (selectedSetUri) {
       getCards(selectedSetUri);
     }
   }, [selectedSetUri]);
-
 
   return (
     <div className="flex flex-col items-center justify-center bg-[url('magicLogo.svg')] bg-repeat-x bg-bottom bg-fixed">
@@ -185,23 +188,38 @@ export function CardsList() {
                   </div>
                 ))
               )}
-              <div className='w-full flex justify-between gap-3'>
-                <button className='w-1/2 bg-orange-900 rounded-md h-10 mt-3 font-bold text-orange-200' onClick={handleExportCardsToList}>EXPORT</button>
-                <button onClick={handleClearButton} className='w-1/2 bg-none border-2 text-orange-900 font-bold rounded-md h-10 mt-3 border-orange-900'>CLEAR DECK</button>
+              <div className="w-full flex justify-between gap-3">
+                <button
+                  className="w-1/2 bg-orange-900 rounded-md h-10 mt-3 font-bold text-orange-200"
+                  onClick={handleExportCardsToList}
+                >
+                  EXPORT
+                </button>
+                <button
+                  onClick={handleClearButton}
+                  className="w-1/2 bg-none border-2 text-orange-900 font-bold rounded-md h-10 mt-3 border-orange-900"
+                >
+                  CLEAR DECK
+                </button>
               </div>
             </SheetContent>
           </Sheet>
         </div>
       </nav>
       <div className="w-5/6 gap-4 grid grid-cols-2">
-        <Input cards={cards} setCards={setCards} />
+        <Input
+          cards={cards}
+          setCards={setCards}
+          getCards={getCards}
+          uri={selectedSetUri}
+        />
         <Combobox
           setSelectedSetUri={setSelectedSetUri}
           setShowNoSetMessage={setShowNoSetMessage}
         />
       </div>
       <div className="w-5/6 flex flex-col">
-        <ul className='grid grid-cols-4 gap-x-6 -ml-6 w-full'>
+        <ul className="grid grid-cols-4 gap-x-6 -ml-6 w-full">
           {cards.map((card) => (
             <li className=" w-[335px]">
               <CardComponent
@@ -211,7 +229,6 @@ export function CardsList() {
               />
             </li>
           ))}
-
         </ul>
       </div>
       <div className="flex align-middle justify-center items-center mt-20">
