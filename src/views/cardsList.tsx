@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { CardComponent } from '../components/CardComponent';
 import { Link } from 'react-router-dom';
 import { Combobox } from '../components/ui/combobox';
-import { Input } from '../components/ui/input';
 import { Book, Heart } from 'lucide-react';
 
 import {
@@ -15,6 +14,7 @@ import {
   SheetTrigger,
 } from '../components/ui/sheet';
 import { Toaster } from '../components/ui/sonner';
+import { Input } from '../components/ui/input';
 
 export interface Card {
   id: string;
@@ -38,17 +38,38 @@ export interface Card {
   oracle_text: string;
   setToDeckCards: () => void;
   quantity: number;
+  favoriteCard: Card;
 }
 
-export interface FavoriteCardProp{
-  setFavoriteCards: (card: Card) => void;
+export interface FavoriteCardProp {
+  setFavoriteCards: (card: Card[]) => void;
 }
-
 export function CardsList() {
   const [cards, setCards] = useState<Card[]>([]);
   const [selectedSetUri, setSelectedSetUri] = useState<string>('');
   const [showNoSetMessage, setShowNoSetMessage] = useState<boolean>(true);
   const [toDeckCards, setToDeckCards] = useState<Card[]>([]);
+
+  const handleClearButton = () => {
+    setToDeckCards([]);
+  };
+
+  const handleExportCardsToList = () => {
+    if (toDeckCards.length === 0) {
+      alert('NÃO POSSUI CARTAS AINDA');
+    } else {
+      const fileData = toDeckCards
+        .map((card) => `${card.quantity}x ${card.name}\n`)
+        .join('');
+      const blob = new Blob([fileData], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.download = 'list.txt';
+      link.href = url;
+      link.click();
+      console.log(fileData);
+    }
+  };
 
   const getCards = (uri: string) => {
     axios
@@ -78,6 +99,35 @@ export function CardsList() {
     });
   };
 
+  const handleCardListDelete = (card: Card): void => {
+    if (card.quantity > 1) {
+      console.log(card.quantity);
+
+      const newCards = [...toDeckCards];
+      const oldCard = toDeckCards.find((item) => item.id === card.id);
+
+      if (!oldCard) return;
+
+      const index = toDeckCards.findIndex((item) => item.id === oldCard.id);
+
+      newCards[index] = {
+        ...oldCard,
+        quantity: oldCard.quantity - 1,
+      };
+
+      setToDeckCards(newCards);
+    } else {
+      const lastCardIndex = toDeckCards.findIndex(
+        (item) => item.id === card.id
+      );
+      const newCards = [
+        ...toDeckCards.slice(0, lastCardIndex),
+        ...toDeckCards.slice(lastCardIndex + 1),
+      ];
+      setToDeckCards(newCards);
+    }
+  };
+
   useEffect(() => {
     if (selectedSetUri) {
       getCards(selectedSetUri);
@@ -95,59 +145,90 @@ export function CardsList() {
             <img className="w-7" src="alexandriaLogo.svg" alt="" />
           </div>
         </Link>
-        <div className='flex flex-row gap-3 text-orange-900'>
-          <Heart/>
-        <Sheet>
-          <SheetTrigger>
-            <Book className="text-orange-900" />
-          </SheetTrigger>
-          <SheetContent className="bg-orange-200">
-            <SheetHeader>
-              <SheetTitle className="text-orange-900 text-3xl font-bold">
-                Deck
-              </SheetTitle>
-              <SheetDescription className="text-md text-orange-900 ">
-                Here you can save cards to your deck and export it as .txt
-              </SheetDescription>
-            </SheetHeader>
-            {toDeckCards.length === 0 ? (
-              <p className="text-orange-900">No cards added to deck</p>
-            ) : (
-              toDeckCards.map((card) => (
-                <div className=" mt-2 flex flex-row-reverse items-center justify-center gap-2">
-                  <div className=" text-orange-900 gap-1 flex flex-1 font-bold">
-                    <div className="font-medium"> {card.quantity}x</div>
-                    <div> {card.name}</div>
+        <div className="flex flex-row gap-3 text-orange-900">
+          <Link to={'/favoriteCards'}>
+            <Heart className="cursor-pointer" />
+          </Link>
+
+          <Sheet>
+            <SheetTrigger>
+              <Book className="text-orange-900" />
+            </SheetTrigger>
+            <SheetContent className="bg-orange-200">
+              <SheetHeader>
+                <SheetTitle className="text-orange-900 text-3xl font-bold">
+                  Deck
+                </SheetTitle>
+                <SheetDescription className="text-md text-orange-900 ">
+                  Here you can save cards to your deck and export it as .txt
+                </SheetDescription>
+              </SheetHeader>
+              {toDeckCards.length === 0 ? (
+                <p className="text-orange-900">No cards added to deck</p>
+              ) : (
+                toDeckCards.map((card) => (
+                  <div className="mt-2 flex flex-row-reverse items-center justify-center gap-2">
+                    <div
+                      onClick={() => handleCardListDelete(card)}
+                      className="cursor-pointer font-bold text-orange-900"
+                    >
+                      X
+                    </div>
+                    <div className=" text-orange-900 gap-1 flex flex-1 font-bold">
+                      <div className="font-medium"> {card.quantity}x</div>
+                      <div> {card.name}</div>
+                    </div>
+                    <div>
+                      <img
+                        className="w-16 h-6 object-cover rounded-md justify-center flex flex-row items-center"
+                        src={card.image_uris.art_crop}
+                        alt=""
+                      />
+                    </div>
                   </div>
-                  <div >
-                    <img className="w-16 h-6 object-cover  rounded-md justify-center flex flex-row items-center" src={card.image_uris.art_crop} alt="" />
-                  </div>
-                </div>
-              ))
-            )}
-          </SheetContent>
-        </Sheet>
+                ))
+              )}
+              <div className="w-full flex justify-between gap-3">
+                <button
+                  className="w-1/2 bg-orange-900 rounded-md h-10 mt-3 font-bold text-orange-200"
+                  onClick={handleExportCardsToList}
+                >
+                  EXPORT
+                </button>
+                <button
+                  onClick={handleClearButton}
+                  className="w-1/2 bg-none border-2 text-orange-900 font-bold rounded-md h-10 mt-3 border-orange-900"
+                >
+                  CLEAR DECK
+                </button>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
-        
       </nav>
       <div className="w-5/6 gap-4 grid grid-cols-2">
-        <Input />
+        <Input
+          cards={cards}
+          setCards={setCards}
+          getCards={getCards}
+          uri={selectedSetUri}
+        />
         <Combobox
           setSelectedSetUri={setSelectedSetUri}
           setShowNoSetMessage={setShowNoSetMessage}
         />
       </div>
       <div className="w-5/6 flex flex-col">
-        <ul>
-          <li className="grid md:grid-cols-2 lg:grid-cols-4 ">
-            {cards.map((card, key) => (
+        <ul className="grid grid-cols-4 gap-x-6 -ml-6 w-full">
+          {cards.map((card) => (
+            <li className=" w-[335px]">
               <CardComponent
-                key={key}
+                key={card.id}
                 card={card}
                 setToDeckCards={addCardToDeck}
               />
-            ))}
-          </li>
+            </li>
+          ))}
         </ul>
       </div>
       <div className="flex align-middle justify-center items-center mt-20">
