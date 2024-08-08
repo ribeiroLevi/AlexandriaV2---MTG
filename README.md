@@ -1,30 +1,31 @@
-# React + TypeScript + Vite
+# Alexandria
+![Slide 16_9 - 1](https://github.com/user-attachments/assets/4d243894-d16e-4acb-9dd3-e37a53c17e5b)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Inspirada na cidade que guardava a grande biblioteca do mundo antigo, Alexandria é uma aplicação voltada à jogadores de Magic The Gathering para vizualização de cartas e construção de decks utilizando a API da Skryfall.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## Tecnologias
+#### Construção do site
+- TypeScript
+- React
+- Skryfall API
+- shadcn/ui
+#### Estilização
+- TailwindCSS
+- Lucide Icons
+#### Versionamento e deploy
+- Git/GitHub
+- Vercel
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Projeto Gráfico
+
+Alexandria, além de um projeto de programação, foi também um estudo de marca. Ela passou por diversas versões até chegar em sua versão final. Carregando o nome de uma das grandes cidades do mundo antiga, sua logo não poderia ser outra se não uma de seus maiores símboles: O Farol de Alexandria.
+#### Processo de construção da marca:
+![image](https://github.com/user-attachments/assets/685c3c49-06a1-408c-aa20-8280c42e9f30)
+
+#### Projeto completo:
+https://www.figma.com/design/5pzwmvPaTH6Y554JhLyfEv/ALEXANDRIA-V2---MAGIC?node-id=63-121&t=A78Kao0Gi9eNFra6-1
