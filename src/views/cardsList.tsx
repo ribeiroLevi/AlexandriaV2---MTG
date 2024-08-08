@@ -135,7 +135,7 @@ export function CardsList() {
   }, [selectedSetUri]);
 
   return (
-    <div className="flex flex-col items-center justify-center bg-[url('magicLogo.svg')] bg-repeat-x bg-bottom bg-fixed">
+    <div className="flex flex-col items-center justify-center bg-repeat-x bg-bottom bg-fixed">
       <nav className="h-24 flex items-center justify-between w-5/6 mb-6">
         <Link to={'/'}>
           <div className="flex justify-center gap-2">
@@ -235,8 +235,11 @@ export function CardsList() {
         <p
           className={`text-orange-800 ${showNoSetMessage ? 'block' : 'hidden'}`}
         >
-          No set selected, please{' '}
-          <span className="text-orange-900 font-bold">select a set</span>.
+          No cards arounde here, you can{' '}
+          <span className="text-orange-900 font-bold">
+            select a set or try another one
+          </span>
+          .
         </p>
       </div>
       <Toaster />
