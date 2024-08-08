@@ -11,7 +11,6 @@ interface QueryCardsProps {
 
 export function Input({ cards, setCards, getCards, uri }: QueryCardsProps) {
   const [randomPlaceHolder, setRandomPlaceHolder] = useState<string>('');
-  const [search, setSearch] = useState<string>('');
 
   const getRandomPlaceHolder = async function fetchRandomName() {
     const response = await axios.get('https://api.scryfall.com/cards/random');
@@ -24,7 +23,6 @@ export function Input({ cards, setCards, getCards, uri }: QueryCardsProps) {
 
   const handleCardQuery = (event: ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
-    setSearch(query);
     if (query.trim() === '') {
       getCards(uri);
     } else {
@@ -35,14 +33,6 @@ export function Input({ cards, setCards, getCards, uri }: QueryCardsProps) {
       );
     }
   };
-
-  const queryCards =
-    search.trim() !== ''
-      ? cards.filter((card) =>
-          card.name.toLowerCase().includes(search.toLowerCase())
-        )
-      : cards;
-
   return (
     <div>
       <input
