@@ -72,6 +72,7 @@ export function CardsList() {
   };
 
   const getCards = (uri: string) => {
+    saveSetUri(uri);
     axios
       .get(uri)
       .then((response) => setCards(response.data.data))
@@ -127,6 +128,32 @@ export function CardsList() {
       setToDeckCards(newCards);
     }
   };
+
+  const saveSetUri = (uri: string) => {
+    try {
+      localStorage.setItem('selectedSetUri', uri);
+    } catch (err) {
+      return undefined;
+    }
+  };
+
+  const loadSetUri = () => {
+    try {
+      const uri = localStorage.getItem('selectedSetUri');
+      return uri || '';
+    } catch (err) {
+      console.error('Error loading URI from local storage', err);
+      return '';
+    }
+  };
+
+  useEffect(() => {
+    const uri = loadSetUri();
+    if (uri) {
+      setSelectedSetUri(uri);
+      getCards(uri);
+    }
+  }, []);
 
   useEffect(() => {
     if (selectedSetUri) {

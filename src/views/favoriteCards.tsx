@@ -3,7 +3,6 @@ import { useFavorites } from '../context/UseFavorites';
 import { useState, useEffect } from 'react';
 import { Card } from './cardsList';
 import { Link } from 'react-router-dom';
-import { Arrow } from '@radix-ui/react-popover';
 import { ChevronLeft } from 'lucide-react';
 
 export function FavoriteCards() {
@@ -32,7 +31,7 @@ export function FavoriteCards() {
   }, [favoriteCards]);
 
   return (
-    <div className="flex items-center flex-col w-full  h-screen">
+    <div className="flex items-center flex-col w-full bg-[url(magicLogo.svg)]">
       <nav className="mb-0 h-24 flex items-center justify-between w-5/6">
         <Link to={'/cardsList'}>
           <ChevronLeft className="text-orange-800" />
@@ -48,7 +47,7 @@ export function FavoriteCards() {
         </Link>
       </nav>
       <div className="w-full flex justify-center mb-4">
-        <p className="text-5xl font-Karantina text-orange-800">
+        <p className="text-3xl font-Karantina text-orange-800">
           Favorite Cards
         </p>
       </div>
