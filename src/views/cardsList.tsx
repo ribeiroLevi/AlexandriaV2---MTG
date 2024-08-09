@@ -262,7 +262,7 @@ export function CardsList() {
         <p
           className={`text-orange-800 ${showNoSetMessage ? 'block' : 'hidden'}`}
         >
-          No cards arounde here, you can{' '}
+          No cards around here, you can{' '}
           <span className="text-orange-900 font-bold">
             select a set or try another one
           </span>
